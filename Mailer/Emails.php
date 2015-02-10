@@ -11,14 +11,13 @@
 
 namespace Sylius\Bundle\CoreBundle\Mailer;
 
-use Sylius\Component\Core\Model\OrderInterface;
-
 /**
- * OrderConfirmationMailerInterface
- *
- * @author Daniel Richter <nexyz9@gmail.com>
+ * @author Paweł Jędrzejewski <pawel@sylius.org>
  */
-interface OrderConfirmationMailerInterface
+class Emails 
 {
-    public function sendOrderConfirmation(OrderInterface $order);
+    const ORDER_CONFIRMATION = 'order_confirmation';
+    const ORDER_COMMENT      = 'order_comment';
+
+    const USER_CONFIRMATION  = 'user_confirmation';
 }

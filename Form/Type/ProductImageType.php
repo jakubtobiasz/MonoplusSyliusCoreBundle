@@ -14,13 +14,13 @@ namespace Sylius\Bundle\CoreBundle\Form\Type;
 /**
  * @author Grzegorz Sadowski <grzegorz.sadowski@lakion.com>
  */
-class TaxonImageType extends ImageType
+class ProductImageType extends ImageType
 {
     /**
      * {@inheritdoc}
      */
     public function getName()
     {
-        return 'sylius_taxon_image';
+        return 'sylius_product_image';
     }
 }

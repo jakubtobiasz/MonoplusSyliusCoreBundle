@@ -14,25 +14,25 @@ namespace spec\Sylius\Bundle\CoreBundle\Form\DataTransformer;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
-use Sylius\Bundle\CoreBundle\Form\DataTransformer\TaxonsToCodesTransformer;
-use Sylius\Component\Core\Model\TaxonInterface;
+use Sylius\Bundle\CoreBundle\Form\DataTransformer\ProductsToCodesTransformer;
+use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Resource\Exception\UnexpectedTypeException;
-use Sylius\Component\Taxonomy\Repository\TaxonRepositoryInterface;
+use Sylius\Component\Core\Repository\ProductRepositoryInterface;
 use Symfony\Component\Form\DataTransformerInterface;
 
 /**
- * @author Mateusz Zalewski <mateusz.zalewski@lakion.com>
+ * @author Łukasz Chruściel <lukasz.chrusciel@lakion.com>
  */
-final class TaxonsToCodesTransformerSpec extends ObjectBehavior
+final class ProductsToCodesTransformerSpec extends ObjectBehavior
 {
-    function let(TaxonRepositoryInterface $taxonRepository)
+    function let(ProductRepositoryInterface $productRepository)
     {
-        $this->beConstructedWith($taxonRepository);
+        $this->beConstructedWith($productRepository);
     }
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(TaxonsToCodesTransformer::class);
+        $this->shouldHaveType(ProductsToCodesTransformer::class);
     }
 
     function it_implements_data_transformer_interface()
@@ -40,27 +40,27 @@ final class TaxonsToCodesTransformerSpec extends ObjectBehavior
         $this->shouldImplement(DataTransformerInterface::class);
     }
 
-    function it_transforms_array_of_taxons_codes_to_taxons_collection(
-        TaxonRepositoryInterface $taxonRepository,
-        TaxonInterface $bows,
-        TaxonInterface $swords
+    function it_transforms_array_of_products_codes_to_products_collection(
+        ProductRepositoryInterface $productRepository,
+        ProductInterface $bow,
+        ProductInterface $sword
     ) {
-        $taxonRepository->findBy(['code' => ['bows', 'swords']])->willReturn([$bows, $swords]);
+        $productRepository->findBy(['code' => ['bow', 'sword']])->willReturn([$bow, $sword]);
 
-        $taxons = new ArrayCollection([$bows->getWrappedObject(), $swords->getWrappedObject()]);
+        $products = new ArrayCollection([$bow->getWrappedObject(), $sword->getWrappedObject()]);
 
-        $this->transform(['bows', 'swords'])->shouldBeCollection($taxons);
+        $this->transform(['bow', 'sword'])->shouldBeCollection($products);
     }
 
-    function it_transforms_only_existing_taxons(
-        TaxonRepositoryInterface $taxonRepository,
-        TaxonInterface $bows
+    function it_transforms_only_existing_products(
+        ProductRepositoryInterface $productRepository,
+        ProductInterface $bow
     ) {
-        $taxonRepository->findBy(['code' => ['bows', 'swords']])->willReturn([$bows]);
+        $productRepository->findBy(['code' => ['bow', 'sword']])->willReturn([$bow]);
 
-        $taxons = new ArrayCollection([$bows->getWrappedObject()]);
+        $products = new ArrayCollection([$bow->getWrappedObject()]);
 
-        $this->transform(['bows', 'swords'])->shouldBeCollection($taxons);
+        $this->transform(['bow', 'sword'])->shouldBeCollection($products);
     }
 
     function it_transforms_empty_array_into_empty_collection()
@@ -76,9 +76,9 @@ final class TaxonsToCodesTransformerSpec extends ObjectBehavior
         ;
     }
 
-    function it_reverse_transforms_into_array_of_taxons_codes(
-        TaxonInterface $axes,
-        TaxonInterface $shields
+    function it_reverse_transforms_into_array_of_products_codes(
+        ProductInterface $axes,
+        ProductInterface $shields
     ) {
         $axes->getCode()->willReturn('axes');
         $shields->getCode()->willReturn('shields');

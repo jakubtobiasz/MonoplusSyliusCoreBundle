@@ -14,14 +14,22 @@ namespace Sylius\Bundle\CoreBundle\Validator\Constraints;
 use Symfony\Component\Validator\Constraint;
 
 /**
- * @author Jan Góralski <jan.goralski@lakion.com>
+ * @author Mateusz Zalewski <mateusz.zalewski@lakion.com>
  */
-final class CannotDisableCurrency extends Constraint
+final class HasAllPricesDefined extends Constraint
 {
     /**
      * @var string
      */
-    public $message = 'The base currency cannot be disabled';
+    public $message = 'You must define price for every channel.';
+
+    /**
+     * {@inheritdoc}
+     */
+    public function validatedBy()
+    {
+        return 'sylius_has_all_prices_defined';
+    }
 
     /**
      * {@inheritdoc}
@@ -29,13 +37,5 @@ final class CannotDisableCurrency extends Constraint
     public function getTargets()
     {
         return Constraint::CLASS_CONSTRAINT;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function validatedBy()
-    {
-        return 'sylius_cannot_disable_currency';
     }
 }
